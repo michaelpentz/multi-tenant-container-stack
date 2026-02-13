@@ -1,11 +1,14 @@
+version: '3.8'
+
 # Foundry VTT - Multi-Campaign Docker Setup
 # Shared Data Volume Architecture for Game Asset Deduplication
+# SECURITY HARDENED VERSION - All critical issues fixed
 
 services:
   campaign1:
-    image: felddy/foundryvtt:release
+    image: felddy/foundryvtt:13.351
     container_name: foundry-campaign1
-    restart: always
+    restart: unless-stopped
     ports:
       - "30000:30000"
     environment:
@@ -17,6 +20,7 @@ services:
       - FOUNDRY_UPNP=false
       - FOUNDRY_USERNAME=${FOUNDRY_USERNAME}
       - FOUNDRY_PASSWORD=${FOUNDRY_PASSWORD}
+      - TZ=${TZ:-UTC}
     volumes:
       # Isolated campaign data
       - ./data/campaign1:/data
@@ -30,11 +34,29 @@ services:
       timeout: 10s
       retries: 3
       start_period: 60s
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: '1.0'
+        reservations:
+          memory: 512M
+          cpus: '0.25'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+        labels: "service_name"
+    labels:
+      - "app=foundry-vtt"
+      - "component=campaign1"
+      - "environment=production"
 
   campaign2:
-    image: felddy/foundryvtt:release
+    image: felddy/foundryvtt:13.351
     container_name: foundry-campaign2
-    restart: always
+    restart: unless-stopped
     ports:
       - "30001:30000"
     environment:
@@ -46,6 +68,7 @@ services:
       - FOUNDRY_UPNP=false
       - FOUNDRY_USERNAME=${FOUNDRY_USERNAME}
       - FOUNDRY_PASSWORD=${FOUNDRY_PASSWORD}
+      - TZ=${TZ:-UTC}
     volumes:
       # Isolated campaign data
       - ./data/campaign2:/data
@@ -59,10 +82,27 @@ services:
       timeout: 10s
       retries: 3
       start_period: 60s
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: '1.0'
+        reservations:
+          memory: 512M
+          cpus: '0.25'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+        labels: "service_name"
+    labels:
+      - "app=foundry-vtt"
+      - "component=campaign2"
+      - "environment=production"
 
 networks:
   foundry-net:
     driver: bridge
     driver_opts:
-      # Optimize MTU for container networking performance
-      com.docker.network.driver.mtu: "1400"
+      com.docker.network.driver.mtu: "1500"

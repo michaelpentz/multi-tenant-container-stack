@@ -1,0 +1,53 @@
+groups:
+  - name: vtt-stack-alerts
+    interval: 30s
+    rules:
+      # Disk Space Alert
+      - alert: DiskSpaceLow
+        expr: (node_filesystem_avail_bytes / node_filesystem_size_bytes) < 0.1
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Disk space is running low"
+          description: "Disk has less than 10% space remaining"
+          
+      # Disk Space Critical
+      - alert: DiskSpaceCritical
+        expr: (node_filesystem_avail_bytes / node_filesystem_size_bytes) < 0.05
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Disk space is critically low"
+          description: "Disk has less than 5% space remaining - immediate action required"
+          
+      # Memory Usage Alert
+      - alert: HighMemoryUsage
+        expr: (container_memory_usage_bytes / container_spec_memory_limit_bytes) > 0.85
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High memory usage detected"
+          description: "Container {{ $labels.name }} is using more than 85% of memory limit"
+          
+      # Container Down Alert
+      - alert: ContainerDown
+        expr: up == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Container is down"
+          description: "Container {{ $labels.instance }} has been down for more than 1 minute"
+          
+      # High CPU Usage
+      - alert: HighCPUUsage
+        expr: rate(container_cpu_usage_seconds_total[5m]) > 0.8
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High CPU usage detected"
+          description: "Container {{ $labels.name }} is using more than 80% CPU"

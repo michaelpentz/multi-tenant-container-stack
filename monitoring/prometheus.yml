@@ -1,17 +1,48 @@
 global:
   scrape_interval: 15s
   evaluation_interval: 15s
+  external_labels:
+    monitor: 'vtt-stack'
+
+# Alertmanager configuration (can be enabled later)
+# alerting:
+#   alertmanagers:
+#     - static_configs:
+#         - targets:
+#           - alertmanager:9093
+
+# Load rules once and periodically evaluate them
+rule_files:
+  - "alert-rules.yml"
 
 scrape_configs:
   - job_name: 'prometheus'
     static_configs:
       - targets: ['localhost:9090']
+    scrape_interval: 15s
 
   - job_name: 'cadvisor'
     static_configs:
       - targets: ['cadvisor:8080']
+    scrape_interval: 15s
     metrics_path: /metrics
+    # Relabel to add container name to metrics
+    relabel_configs:
+      - source_labels: [__name__]
+        target_label: instance
 
-  - job_name: 'docker'
+  - job_name: 'foundry-campaign1'
     static_configs:
-      - targets: ['cadvisor:8080']
+      - targets: ['foundry-campaign1:30000']
+    scrape_interval: 30s
+    metrics_path: /metrics
+    # Foundry doesn't expose Prometheus metrics by default
+    # This is a placeholder for when metrics are added
+    
+  - job_name: 'foundry-campaign2'
+    static_configs:
+      - targets: ['foundry-campaign2:30000']
+    scrape_interval: 30s
+    metrics_path: /metrics
+    # Foundry doesn't expose Prometheus metrics by default
+    # This is a placeholder for when metrics are added

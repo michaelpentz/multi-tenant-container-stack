@@ -1,21 +1,47 @@
+version: '3.8'
+
 # FileBrowser - Web-Based File Manager
 # For easy management of shared assets and campaign data
+# SECURITY HARDENED VERSION
 
 services:
   filebrowser:
-    image: filebrowser/filebrowser:latest
+    image: filebrowser/filebrowser:v2.26.0
     container_name: filebrowser
     restart: unless-stopped
     ports:
       - "8080:80"
     volumes:
-      # Root directory to browse
-      - /home/foundry/foundry_docker:/srv
+      # Mount parent directory containing all Foundry data
+      # This should be the same directory as foundry-vtt/data
+      - ${FOUNDRY_DATA_PATH:-./data}:/srv
       # Configuration database
-      - ./filebrowser.db:/database.db
+      - ./filebrowser.db:/database/filebrowser.db
       # Custom configuration
       - ./filebrowser.json:/config/settings.json
     environment:
-      - FB_DATABASE=/database.db
+      - FB_DATABASE=/database/filebrowser.db
       - FB_CONFIG=/config/settings.json
-    command: ["--port", "80"]
+      - TZ=${TZ:-UTC}
+    command: ["--port", "80", "--database", "/database/filebrowser.db", "--config", "/config/settings.json"]
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: '0.5'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+        labels: "service_name"
+    labels:
+      - "app=filebrowser"
+      - "component=web-ui"
+      - "environment=production"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:80/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
