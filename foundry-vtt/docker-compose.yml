@@ -1,0 +1,68 @@
+# Foundry VTT - Multi-Campaign Docker Setup
+# Shared Data Volume Architecture for Game Asset Deduplication
+
+services:
+  campaign1:
+    image: felddy/foundryvtt:release
+    container_name: foundry-campaign1
+    restart: always
+    ports:
+      - "30000:30000"
+    environment:
+      - FOUNDRY_COMPRESS_WEBSOCKET=true
+      - FOUNDRY_VERSION=${FOUNDRY_VERSION}
+      - FOUNDRY_LICENSE_KEY=${FOUNDRY_LICENSE_KEY_1}
+      - FOUNDRY_ADMIN_KEY=${FOUNDRY_ADMIN_KEY}
+      - FOUNDRY_PORT=30000
+      - FOUNDRY_UPNP=false
+      - FOUNDRY_USERNAME=${FOUNDRY_USERNAME}
+      - FOUNDRY_PASSWORD=${FOUNDRY_PASSWORD}
+    volumes:
+      # Isolated campaign data
+      - ./data/campaign1:/data
+      # Shared read-only assets across all campaigns
+      - ./shared_assets:/data/shared_assets:ro
+    networks:
+      - foundry-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:30000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  campaign2:
+    image: felddy/foundryvtt:release
+    container_name: foundry-campaign2
+    restart: always
+    ports:
+      - "30001:30000"
+    environment:
+      - FOUNDRY_COMPRESS_WEBSOCKET=true
+      - FOUNDRY_VERSION=${FOUNDRY_VERSION}
+      - FOUNDRY_LICENSE_KEY=${FOUNDRY_LICENSE_KEY_2}
+      - FOUNDRY_ADMIN_KEY=${FOUNDRY_ADMIN_KEY}
+      - FOUNDRY_PORT=30000
+      - FOUNDRY_UPNP=false
+      - FOUNDRY_USERNAME=${FOUNDRY_USERNAME}
+      - FOUNDRY_PASSWORD=${FOUNDRY_PASSWORD}
+    volumes:
+      # Isolated campaign data
+      - ./data/campaign2:/data
+      # Shared read-only assets across all campaigns
+      - ./shared_assets:/data/shared_assets:ro
+    networks:
+      - foundry-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:30000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+networks:
+  foundry-net:
+    driver: bridge
+    driver_opts:
+      # Optimize MTU for container networking performance
+      com.docker.network.driver.mtu: "1400"

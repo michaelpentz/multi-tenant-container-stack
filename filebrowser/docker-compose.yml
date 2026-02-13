@@ -1,0 +1,21 @@
+# FileBrowser - Web-Based File Manager
+# For easy management of shared assets and campaign data
+
+services:
+  filebrowser:
+    image: filebrowser/filebrowser:latest
+    container_name: filebrowser
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      # Root directory to browse
+      - /home/foundry/foundry_docker:/srv
+      # Configuration database
+      - ./filebrowser.db:/database.db
+      # Custom configuration
+      - ./filebrowser.json:/config/settings.json
+    environment:
+      - FB_DATABASE=/database.db
+      - FB_CONFIG=/config/settings.json
+    command: ["--port", "80"]

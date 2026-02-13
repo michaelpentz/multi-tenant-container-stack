@@ -1,0 +1,47 @@
+.env
+.env.local
+.env.production
+*.env
+
+# Backup files
+*.tar.gz
+*.tar
+*.zip
+backups/
+backup/
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs
+logs/
+*.log
+
+# Runtime data
+data/
+shared_assets/
+
+# SSL certificates
+ssl/
+certs/
+*.pem
+*.key
+*.crt
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporary files
+*.tmp
+*.temp
+temp/
+tmp/
