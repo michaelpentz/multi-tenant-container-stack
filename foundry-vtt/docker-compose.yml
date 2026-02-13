@@ -12,7 +12,12 @@ services:
     ports:
       - "30000:30000"
     environment:
+      # WebSocket Optimization for Global Users
       - FOUNDRY_COMPRESS_WEBSOCKET=true
+      - FOUNDRY_WEBSOCKET_PING_INTERVAL=25000
+      - FOUNDRY_WEBSOCKET_PONG_TIMEOUT=10000
+      
+      # Core Configuration
       - FOUNDRY_VERSION=${FOUNDRY_VERSION}
       - FOUNDRY_LICENSE_KEY=${FOUNDRY_LICENSE_KEY_1}
       - FOUNDRY_ADMIN_KEY=${FOUNDRY_ADMIN_KEY}
@@ -21,6 +26,9 @@ services:
       - FOUNDRY_USERNAME=${FOUNDRY_USERNAME}
       - FOUNDRY_PASSWORD=${FOUNDRY_PASSWORD}
       - TZ=${TZ:-UTC}
+      
+      # Performance Optimization
+      - NODE_OPTIONS=--max-old-space-size=2048
     volumes:
       # Isolated campaign data
       - ./data/campaign1:/data
@@ -60,7 +68,12 @@ services:
     ports:
       - "30001:30000"
     environment:
+      # WebSocket Optimization for Global Users
       - FOUNDRY_COMPRESS_WEBSOCKET=true
+      - FOUNDRY_WEBSOCKET_PING_INTERVAL=25000
+      - FOUNDRY_WEBSOCKET_PONG_TIMEOUT=10000
+      
+      # Core Configuration
       - FOUNDRY_VERSION=${FOUNDRY_VERSION}
       - FOUNDRY_LICENSE_KEY=${FOUNDRY_LICENSE_KEY_2}
       - FOUNDRY_ADMIN_KEY=${FOUNDRY_ADMIN_KEY}
@@ -69,6 +82,9 @@ services:
       - FOUNDRY_USERNAME=${FOUNDRY_USERNAME}
       - FOUNDRY_PASSWORD=${FOUNDRY_PASSWORD}
       - TZ=${TZ:-UTC}
+      
+      # Performance Optimization
+      - NODE_OPTIONS=--max-old-space-size=2048
     volumes:
       # Isolated campaign data
       - ./data/campaign2:/data
@@ -105,4 +121,8 @@ networks:
   foundry-net:
     driver: bridge
     driver_opts:
-      com.docker.network.driver.mtu: "1500"
+      # MTU 1400 for VPN/tunnel compatibility (prevents fragmentation)
+      com.docker.network.driver.mtu: "1400"
+    ipam:
+      config:
+        - subnet: 172.21.0.0/16
