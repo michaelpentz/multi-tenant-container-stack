@@ -99,7 +99,7 @@ View the complete security audit: [SECURITY_AUDIT.md](SECURITY_AUDIT.md)
 ### 1. Clone and Configure
 
 ```bash
-git clone https://gitlab.com/michael.pentz/vtt-stack.git
+git clone https://gitlab.com/username/vtt-stack.git
 cd vtt-stack
 
 # Copy example configs

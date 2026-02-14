@@ -49,7 +49,7 @@
 
 ```bash
 # SSH into your server
-ssh root@208.84.101.137
+ssh root@YOUR_SERVER_IP
 
 # Navigate to the project
 cd /path/to/vtt-stack
@@ -119,8 +119,8 @@ docker logs foundry-campaign1 | grep -i websocket
 
 Point your domain to the server:
 ```
-campaign1.yourdomain.com → 208.84.101.137
-campaign2.yourdomain.com → 208.84.101.137
+campaign1.yourdomain.com → YOUR_SERVER_IP
+campaign2.yourdomain.com → YOUR_SERVER_IP
 ```
 
 Or update nginx.conf with your actual domain names.
@@ -244,7 +244,7 @@ docker compose up -d
 **Step 2: Network Test**
 ```bash
 # User runs this from their location
-ping 208.84.101.137
+ping YOUR_SERVER_IP
 # Should be < 300ms acceptable
 ```
 
@@ -315,7 +315,7 @@ Your VTT Stack now has:
 - ✅ **Comprehensive Documentation**
 
 **Total Project Size:** 28 files, 4,500+ lines of code  
-**GitLab URL:** https://gitlab.com/michael.pentz/vtt-stack  
+**GitLab URL:** https://gitlab.com/username/vtt-stack  
 **Status:** ✅ Production Ready
 
 ---
