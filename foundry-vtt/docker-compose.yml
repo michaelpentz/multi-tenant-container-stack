@@ -31,9 +31,9 @@ services:
       - NODE_OPTIONS=--max-old-space-size=2048
     volumes:
       # Isolated campaign data
-      - ./data/campaign1:/data
+      - ../data/campaign1:/data
       # Shared read-only assets across all campaigns
-      - ./shared_assets:/data/shared_assets:ro
+      - ../shared_assets:/data/shared_assets:ro
     networks:
       - foundry-net
     healthcheck:
@@ -87,9 +87,9 @@ services:
       - NODE_OPTIONS=--max-old-space-size=2048
     volumes:
       # Isolated campaign data
-      - ./data/campaign2:/data
+      - ../data/campaign2:/data
       # Shared read-only assets across all campaigns
-      - ./shared_assets:/data/shared_assets:ro
+      - ../shared_assets:/data/shared_assets:ro
     networks:
       - foundry-net
     healthcheck:

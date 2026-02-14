@@ -30,12 +30,12 @@ echo
 
 # Find project directory
 PROJECT_DIR=""
-if [[ -d "/home/foundry/vtt-stack" ]]; then
-    PROJECT_DIR="/home/foundry/vtt-stack"
-elif [[ -d "/opt/vtt-stack" ]]; then
-    PROJECT_DIR="/opt/vtt-stack"
-elif [[ -d "/root/vtt-stack" ]]; then
-    PROJECT_DIR="/root/vtt-stack"
+if [[ -d "/home/foundry/foundry_docker" ]]; then
+    PROJECT_DIR="/home/foundry/foundry_docker"
+elif [[ -d "/home/foundry/foundry_docker" ]]; then
+    PROJECT_DIR="/home/foundry/foundry_docker"
+elif [[ -d "/home/foundry/foundry_docker" ]]; then
+    PROJECT_DIR="/home/foundry/foundry_docker"
 else
     log_error "Could not find vtt-stack directory"
     log_info "Please specify the path:"
