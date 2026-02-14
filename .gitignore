@@ -45,3 +45,20 @@ Thumbs.db
 *.temp
 temp/
 tmp/
+
+# =============================================================================
+# PREVENT PERSONAL DATA COMMITS
+# =============================================================================
+# Local git configs and logs that may contain personal data
+.git/config.local
+.git/logs/
+
+# Backup files that might contain old configs
+*.backup
+*~
+.bak
+
+# Temporary files
+*.tmp
+*.temp
+
