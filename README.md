@@ -12,18 +12,18 @@ Multi-tenant container orchestration stack that solves the duplicate storage pro
 +-----------------------------------------------------------+
 |                      Docker Host                          |
 |  +-----------------+  +-----------------+                 |
-|  |  Tenant 1       |  |  Tenant 2       |                |
-|  |  Port: 30000    |  |  Port: 30001    |                |
-|  |  Memory: 2GB    |  |  CPU: 1 core    |                |
+|  |  Tenant 1       |  |  Tenant 2       |                 |
+|  |  Port: 30000    |  |  Port: 30001    |                 |
+|  |  Memory: 2GB    |  |  CPU: 1 core    |                 |
 |  |  /data (isolated)|  |  /data (isolated)|               |
-|  +--------+--------+  +--------+--------+                |
+|  +--------+--------+  +--------+--------+                 |
 |           +--------+----------+                           |
-|           |  shared_assets    |                            |
-|           |  (read-only)      |                            |
-|           +-------------------+                            |
+|           |  shared_assets    |                           |
+|           |  (read-only)      |                           |
+|           +-------------------+                           |
 |  +--------------+      +------------------+               |
-|  | FileBrowser   |      | Monitoring Stack  |              |
-|  | Port: 8080    |      | Prometheus+Grafana|              |
+|  | FileBrowser   |      | Monitoring Stack  |             |
+|  | Port: 8080    |      | Prometheus+Grafana|             |
 |  +--------------+      +------------------+               |
 +-----------------------------------------------------------+
 ```
